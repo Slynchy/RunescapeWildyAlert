@@ -1,0 +1,25 @@
+{
+  "name": "runescapewildyalert",
+  "version": "1.0.0",
+  "description": "Sets up Gotify alerts when Wilderness Flash Events occur in RS3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "runescape",
+    "runescape3",
+    "rs3",
+    "wilderness",
+    "typescript",
+    "gotify",
+    "rest"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/prompt": "^1.1.4",
+    "gotify": "^1.1.0",
+    "prompt": "^1.3.0"
+  }
+}

@@ -1,27 +1,29 @@
 const Prompt = require("prompt");
 const { gotify } = require("gotify");
 
-interface IRuntimeProps {
-    nextEventID: number;
-    nextEventTimestamp: number;
-    onlyShowSpecials: boolean;
-    triggeredAlerts: Record<number, boolean>;
-}
-
-const RUNTIME_PROPERTIES: IRuntimeProps = {
+/**
+ * Const convenience object to hold runtime variables
+ */
+const RUNTIME_PROPERTIES = {
     nextEventID: -1,
     nextEventTimestamp: 0,
     onlyShowSpecials: false,
     triggeredAlerts: {},
 }
 
+/**
+ * The alert times in milliseconds
+ */
 const ALERTS = [
-    1000 * 60 * 10,
-    1000 * 60 * 5,
-    1000 * 60 * 2,
-    0,
+    1000 * 60 * 10, // 10 mins
+    1000 * 60 * 5,  // 5 mins
+    1000 * 60 * 2,  // 2 mins
+    0,              // Happening!
 ];
 
+/**
+ * The default gotify settings
+ */
 const DEFAULT_GOTIFY_SETTINGS = {
     server: "",
     app: "",
@@ -31,6 +33,7 @@ const DEFAULT_GOTIFY_SETTINGS = {
 enum EVENTS {
     "Spider Swarm",
     "Unnatural Outcrop",
+    "Stryke the Wyrm",
     "Demon Stragglers",
     "Butterfly Swarm",
     "King Black Dragon Rampage (Special)",
@@ -46,6 +49,7 @@ enum EVENTS {
 }
 
 const SPECIAL_EVENTS = [
+    EVENTS["Stryke the Wyrm"],
     EVENTS["Infernal Star (Special)"],
     EVENTS["Evil Bloodwood Tree (Special)"],
     EVENTS["King Black Dragon Rampage (Special)"],
@@ -83,6 +87,15 @@ function logEvent(selectedEvent: EVENTS, timestamp: number) {
 }
 
 async function main() {
+    const args = process.argv.slice(2);
+    if(args.length < 2 && (!DEFAULT_GOTIFY_SETTINGS.app || !DEFAULT_GOTIFY_SETTINGS.server)) {
+        console.error("Please provide both the Gotify server and app tokens as arguments!");
+        return;
+    } else {
+        DEFAULT_GOTIFY_SETTINGS.server = args[0];
+        DEFAULT_GOTIFY_SETTINGS.app = args[1];
+    }
+
     for(let i = 0; i < EVENTS.NUM_OF_EVENTS; i++) {
         console.log(`${i+1} - ${EVENTS[i]}`);
     }
